@@ -77,7 +77,8 @@ mask = (
 dff = df[mask].copy()
 dff_scored = df_scored[
     df_scored["year"].between(*year_range) &
-    df_scored["genre"].isin(selected_genres)
+    df_scored["genre"].isin(selected_genres) &
+    df_scored["console"].isin(selected_consoles)
 ].copy()
 
 # ── Métricas ──────────────────────────────────────────────────────────────────
