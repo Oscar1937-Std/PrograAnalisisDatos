@@ -59,6 +59,7 @@ if st.sidebar.button("↺ Restablecer Filtros", use_container_width=True):
     st.session_state["consoles_select"] = sorted(df["console"].dropna().unique().tolist())
 
 
+
 # ── Filtrar ───────────────────────────────────────────────────────────────────
 mask = (
     df["year"].between(*year_range) &
