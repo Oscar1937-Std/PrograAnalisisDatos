@@ -56,8 +56,10 @@ selected_consoles = st.sidebar.multiselect(
 )
 
 if st.sidebar.button("↺ Restablecer Filtros", use_container_width=True):
-    st.session_state["genres_select"]   = sorted(df["genre"].dropna().unique().tolist())
-    st.session_state["consoles_select"] = sorted(df["console"].dropna().unique().tolist())
+    st.session_state["genres_select"]   = all_genres
+    st.session_state["consoles_select"] = all_consoles
+    st.rerun()
+
 
 st.sidebar.markdown(
     """
