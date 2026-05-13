@@ -50,27 +50,8 @@ selected_genres = st.sidebar.multiselect(
     key="genres_select"
 )
 
-st.sidebar.markdown("---")
-top_n = st.sidebar.slider("Top N consolas", 5, 20, 15)
 
-st.sidebar.markdown(
-    """
-    <style>
-    [data-testid="stSidebar"] .stMultiSelect { margin-bottom: 0rem; }
-    [data-testid="stSidebar"] .stSlider { margin-top: 0rem; }
-    [data-testid="stSidebar"] .stNumberInput { margin-bottom: 0rem; }
-    [data-testid="stSidebar"] .stButton { margin-bottom: 0rem; }
-    [data-testid="stSidebar"] hr { margin: 0.3rem 0; }
-    [data-testid="stSidebar"] h1 { margin-bottom: 0rem; }
-    [data-testid="stSidebar"] p { margin-bottom: 0rem; }
-    [data-testid="stSidebarUserContent"] { padding-top: 1rem; }
-    section[data-testid="stSidebar"] > div { overflow-y: hidden !important; }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
-
-# Filtrar
+# ── Filtrar ───────────────────────────────────────────────────────────────────
 mask = (
     df["year"].between(*year_range) &
     df["genre"].isin(selected_genres)
@@ -120,7 +101,7 @@ with col_a:
     st.plotly_chart(fig2, use_container_width=True)
 
 with col_b:
-    consolas = dff.groupby("console")["total_sales"].sum().sort_values(ascending=False).head(top_n).reset_index()
+    consolas = dff.groupby("console")["total_sales"].sum().sort_values(ascending=False).head(20).reset_index()
     fig3 = px.bar(
         consolas, x="console", y="total_sales",
         labels={"console": "Consola", "total_sales": "Ventas (M)"},
