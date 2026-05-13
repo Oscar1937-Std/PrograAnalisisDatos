@@ -53,27 +53,6 @@ selected_genres = st.sidebar.multiselect(
     key="genres_select"
 )
 
-st.sidebar.markdown(
-    """
-    <style>
-    [data-testid="stSidebar"] > div:first-child {
-        display: flex;
-        flex-direction: column;
-        height: 100vh;
-    }
-    [data-testid="stSidebar"] .stMultiSelect {
-        flex: 1;
-    }
-    [data-testid="stSidebar"] .stMultiSelect > div {
-        height: 100%;
-    }
-    [data-testid="stSidebar"] .stMultiSelect [data-baseweb="select"] {
-        height: 100%;
-    }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
 
 st.sidebar.markdown("---")
 top_n = st.sidebar.slider("Top N consolas", 5, 20, 15)
