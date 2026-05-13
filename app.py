@@ -27,13 +27,31 @@ st.sidebar.markdown("**Dataset: 1980 – 2024**")
 
 year_min = int(df["year"].min())
 year_max = int(df["year"].max())
-year_range = st.sidebar.slider(
-    "Rango de años", year_min, year_max, (year_min, year_max)
-)
+
+col_s1, col_s2 = st.sidebar.columns(2)
+year_start = col_s1.number_input("Año inicial", min_value=year_min, max_value=year_max, value=year_min, step=1)
+year_end   = col_s2.number_input("Año final",   min_value=year_min, max_value=year_max, value=year_max, step=1)
+
+if year_start > year_end:
+    st.sidebar.error("⚠️ El año inicial no puede ser mayor al final.")
+    year_range = (year_min, year_max)
+else:
+    year_range = (year_start, year_end)
+
+st.sidebar.markdown("---")
 
 all_genres = sorted(df["genre"].dropna().unique())
 selected_genres = st.sidebar.multiselect(
-    "Géneros", all_genres, default=all_genres
+    "Géneros",
+    all_genres,
+    default=all_genres,
+    key="genres_select"
+)
+
+# Ocupa el espacio restante del sidebar hacia abajo
+st.sidebar.markdown(
+    "<style>div[data-testid='stSidebarUserContent'] { height: 100%; }</style>",
+    unsafe_allow_html=True
 )
 
 # Filtrar
