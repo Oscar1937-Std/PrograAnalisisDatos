@@ -69,6 +69,18 @@ st.sidebar.markdown(
     """,
     unsafe_allow_html=True
 )
+
+# Filtrar
+mask = (
+    df["year"].between(*year_range) &
+    df["genre"].isin(selected_genres)
+)
+dff = df[mask].copy()
+dff_scored = df_scored[
+    df_scored["year"].between(*year_range) &
+    df_scored["genre"].isin(selected_genres)
+].copy()
+
 # ── Métricas ──────────────────────────────────────────────────────────────────
 st.title("🎮 Video Games Sales — Análisis Exploratorio")
 st.markdown("---")
