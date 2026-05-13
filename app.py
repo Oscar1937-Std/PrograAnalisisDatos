@@ -77,16 +77,23 @@ st.sidebar.markdown(
 
 st.sidebar.markdown("---")
 top_n = st.sidebar.slider("Top N consolas", 5, 20, 15)
-# Filtrar
-mask = (
-    df["year"].between(*year_range) &
-    df["genre"].isin(selected_genres)
+
+st.sidebar.markdown(
+    """
+    <style>
+    [data-testid="stSidebar"] .stMultiSelect { margin-bottom: 0rem; }
+    [data-testid="stSidebar"] .stSlider { margin-top: 0rem; }
+    [data-testid="stSidebar"] .stNumberInput { margin-bottom: 0rem; }
+    [data-testid="stSidebar"] .stButton { margin-bottom: 0rem; }
+    [data-testid="stSidebar"] hr { margin: 0.3rem 0; }
+    [data-testid="stSidebar"] h1 { margin-bottom: 0rem; }
+    [data-testid="stSidebar"] p { margin-bottom: 0rem; }
+    [data-testid="stSidebarUserContent"] { padding-top: 1rem; }
+    section[data-testid="stSidebar"] > div { overflow-y: hidden !important; }
+    </style>
+    """,
+    unsafe_allow_html=True
 )
-dff = df[mask].copy()
-dff_scored = df_scored[
-    df_scored["year"].between(*year_range) &
-    df_scored["genre"].isin(selected_genres)
-].copy()
 
 # ── Métricas ──────────────────────────────────────────────────────────────────
 st.title("🎮 Video Games Sales — Análisis Exploratorio")
