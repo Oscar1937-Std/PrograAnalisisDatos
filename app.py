@@ -41,8 +41,6 @@ if year_start > year_end:
 else:
     year_range = (year_start, year_end)
 
-st.sidebar.markdown("---")
-
 all_genres = sorted(df["genre"].dropna().unique().tolist())
 selected_genres = st.sidebar.multiselect(
     "Géneros",
