@@ -48,11 +48,7 @@ selected_genres = st.sidebar.multiselect(
     key="genres_select"
 )
 
-# Ocupa el espacio restante del sidebar hacia abajo
-st.sidebar.markdown(
-    "<style>div[data-testid='stSidebarUserContent'] { height: 100%; }</style>",
-    unsafe_allow_html=True
-)
+
 
 # Filtrar
 mask = (
