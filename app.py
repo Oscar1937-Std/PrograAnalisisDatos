@@ -32,7 +32,8 @@ year_start = col_s1.number_input("Año inicial", min_value=year_min, max_value=y
 year_end   = col_s2.number_input("Año final",   min_value=year_min, max_value=year_max, value=year_max, step=1)
 
 if st.sidebar.button("↺ Restablecer años y géneros", use_container_width=True):
-    st.session_state["genres_select"] = sorted(df["genre"].dropna().unique().tolist())
+    st.session_state["genres_select"]   = sorted(df["genre"].dropna().unique().tolist())
+    st.session_state["consoles_select"] = sorted(df["console"].dropna().unique().tolist())
 
 if year_start > year_end:
     st.sidebar.error("⚠️ El año inicial no puede ser mayor al final.")
@@ -50,11 +51,19 @@ selected_genres = st.sidebar.multiselect(
     key="genres_select"
 )
 
+all_consoles = sorted(df["console"].dropna().unique().tolist())
+selected_consoles = st.sidebar.multiselect(
+    "Consolas",
+    all_consoles,
+    default=all_consoles,
+    key="consoles_select"
+)
 
 # ── Filtrar ───────────────────────────────────────────────────────────────────
 mask = (
     df["year"].between(*year_range) &
-    df["genre"].isin(selected_genres)
+    df["genre"].isin(selected_genres) &
+    df["console"].isin(selected_consoles)
 )
 dff = df[mask].copy()
 dff_scored = df_scored[
@@ -196,9 +205,17 @@ st.plotly_chart(fig8, use_container_width=True)
 st.subheader("🔥 Heatmap: Géneros por Consola")
 import plotly.figure_factory as ff
 
-top_consolas_idx = dff.groupby("console")["total_sales"].sum().nlargest(12).index
+top_consolas_idx = df[
+    df["genre"].isin(selected_genres) &
+    df["year"].between(*year_range)
+].groupby("console")["total_sales"].sum().nlargest(12).index
+
 heatmap_data = (
-    dff[dff["console"].isin(top_consolas_idx)]
+    df[
+        df["console"].isin(top_consolas_idx) &
+        df["genre"].isin(selected_genres) &
+        df["year"].between(*year_range)
+    ]
     .groupby(["console", "genre"])["total_sales"]
     .sum()
     .unstack(fill_value=0)
