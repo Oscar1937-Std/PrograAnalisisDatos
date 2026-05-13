@@ -20,7 +20,6 @@ def load_data():
     return df, df_scored
 
 df, df_scored = load_data()
-
 # ── Sidebar ───────────────────────────────────────────────────────────────────
 st.sidebar.title("🎮 Video Games Sales")
 st.sidebar.markdown("**Dataset: 1980 – 2024**")
@@ -33,8 +32,6 @@ year_start = col_s1.number_input("Año inicial", min_value=year_min, max_value=y
 year_end   = col_s2.number_input("Año final",   min_value=year_min, max_value=year_max, value=year_max, step=1)
 
 if st.sidebar.button("↺ Restablecer años y géneros", use_container_width=True):
-    year_start = year_min
-    year_end   = year_max
     st.session_state["genres_select"] = sorted(df["genre"].dropna().unique().tolist())
 
 if year_start > year_end:
@@ -52,7 +49,6 @@ selected_genres = st.sidebar.multiselect(
     default=all_genres,
     key="genres_select"
 )
-
 
 st.sidebar.markdown("---")
 top_n = st.sidebar.slider("Top N consolas", 5, 20, 15)
@@ -73,7 +69,6 @@ st.sidebar.markdown(
     """,
     unsafe_allow_html=True
 )
-
 # ── Métricas ──────────────────────────────────────────────────────────────────
 st.title("🎮 Video Games Sales — Análisis Exploratorio")
 st.markdown("---")
