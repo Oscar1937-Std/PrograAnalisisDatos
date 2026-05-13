@@ -200,7 +200,7 @@ else:
 st.subheader("🏆 Top 20 juegos más vendidos")
 top20 = dff.nlargest(20, "total_sales")[
     ["title", "console", "genre", "publisher", "year", "total_sales"]
-].sort_values("total_sales", ascending=True)
+].sort_values("total_sales", ascending=False)
 
 fig8 = px.bar(
     top20, x="total_sales", y="title", orientation="h",
@@ -208,22 +208,16 @@ fig8 = px.bar(
     labels={"total_sales": "Ventas (M)", "title": ""}
 )
 fig8.update_layout(height=600, showlegend=True)
+fig8.update_yaxes(categoryorder="total ascending")
 st.plotly_chart(fig8, use_container_width=True)
 
 # ── Sección 7: Heatmap ────────────────────────────────────────────────────────
 st.subheader("🔥 Heatmap: Géneros por Consola")
 
-top_consolas_idx = df[
-    df["genre"].isin(selected_genres) &
-    df["year"].between(*year_range)
-].groupby("console")["total_sales"].sum().nlargest(12).index
+top_consolas_idx = dff.groupby("console")["total_sales"].sum().nlargest(12).index
 
 heatmap_data = (
-    df[
-        df["console"].isin(top_consolas_idx) &
-        df["genre"].isin(selected_genres) &
-        df["year"].between(*year_range)
-    ]
+    dff[dff["console"].isin(top_consolas_idx)]
     .groupby(["console", "genre"])["total_sales"]
     .sum()
     .unstack(fill_value=0)
