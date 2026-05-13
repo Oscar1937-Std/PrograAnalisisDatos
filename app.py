@@ -74,6 +74,9 @@ st.sidebar.markdown(
     """,
     unsafe_allow_html=True
 )
+
+st.sidebar.markdown("---")
+top_n = st.sidebar.slider("Top N consolas", 5, 20, 15)
 # Filtrar
 mask = (
     df["year"].between(*year_range) &
@@ -124,7 +127,6 @@ with col_a:
     st.plotly_chart(fig2, use_container_width=True)
 
 with col_b:
-    top_n = st.slider("Top N consolas", 5, 20, 15, key="consolas_slider")
     consolas = dff.groupby("console")["total_sales"].sum().sort_values(ascending=False).head(top_n).reset_index()
     fig3 = px.bar(
         consolas, x="console", y="total_sales",
