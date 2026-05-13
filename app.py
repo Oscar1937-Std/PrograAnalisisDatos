@@ -21,6 +21,7 @@ def load_data():
     return df, df_scored
 
 df, df_scored = load_data()
+
 # ── Sidebar ───────────────────────────────────────────────────────────────────
 st.sidebar.title("🎮 Video Games Sales")
 st.sidebar.markdown("**Dataset: 1980 – 2024**")
@@ -28,10 +29,18 @@ st.sidebar.markdown("**Dataset: 1980 – 2024**")
 year_min = int(df["year"].min())
 year_max = int(df["year"].max())
 
+all_genres   = sorted(df["genre"].dropna().unique().tolist())
+all_consoles = sorted(df["console"].dropna().unique().tolist())
+
+# Inicializar session_state solo la primera vez
+if "genres_select" not in st.session_state:
+    st.session_state["genres_select"] = all_genres
+if "consoles_select" not in st.session_state:
+    st.session_state["consoles_select"] = all_consoles
+
 col_s1, col_s2 = st.sidebar.columns(2)
 year_start = col_s1.number_input("Año inicial", min_value=year_min, max_value=year_max, value=year_min, step=1)
 year_end   = col_s2.number_input("Año final",   min_value=year_min, max_value=year_max, value=year_max, step=1)
-
 
 if year_start > year_end:
     st.sidebar.error("⚠️ El año inicial no puede ser mayor al final.")
@@ -39,27 +48,18 @@ if year_start > year_end:
 else:
     year_range = (year_start, year_end)
 
-all_genres = sorted(df["genre"].dropna().unique().tolist())
 selected_genres = st.sidebar.multiselect(
-    "Géneros",
-    all_genres,
-    default=all_genres,
-    key="genres_select"
+    "Géneros", all_genres, key="genres_select"
 )
 
-all_consoles = sorted(df["console"].dropna().unique().tolist())
 selected_consoles = st.sidebar.multiselect(
-    "Consolas",
-    all_consoles,
-    default=all_consoles,
-    key="consoles_select"
+    "Consolas", all_consoles, key="consoles_select"
 )
 
 if st.sidebar.button("↺ Restablecer Filtros", use_container_width=True):
     st.session_state["genres_select"]   = all_genres
     st.session_state["consoles_select"] = all_consoles
     st.rerun()
-
 
 st.sidebar.markdown(
     """
