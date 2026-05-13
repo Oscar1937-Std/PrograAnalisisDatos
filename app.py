@@ -33,7 +33,9 @@ year_start = col_s1.number_input("Año inicial", min_value=year_min, max_value=y
 year_end   = col_s2.number_input("Año final",   min_value=year_min, max_value=year_max, value=year_max, step=1)
 
 if st.sidebar.button("↺ Restablecer años y géneros", use_container_width=True):
-    st.session_state["genre_checks"] = {g: True for g in sorted(df["genre"].dropna().unique())}
+    year_start = year_min
+    year_end   = year_max
+    st.session_state["genres_select"] = sorted(df["genre"].dropna().unique().tolist())
 
 if year_start > year_end:
     st.sidebar.error("⚠️ El año inicial no puede ser mayor al final.")
@@ -42,24 +44,36 @@ else:
     year_range = (year_start, year_end)
 
 st.sidebar.markdown("---")
-st.sidebar.markdown("**Géneros**")
 
 all_genres = sorted(df["genre"].dropna().unique().tolist())
+selected_genres = st.sidebar.multiselect(
+    "Géneros",
+    all_genres,
+    default=all_genres,
+    key="genres_select"
+)
 
-if "genre_checks" not in st.session_state:
-    st.session_state["genre_checks"] = {g: True for g in all_genres}
-
-selected_genres = []
-for genre in all_genres:
-    checked = st.sidebar.checkbox(
-        genre,
-        value=st.session_state["genre_checks"].get(genre, True),
-        key=f"chk_{genre}"
-    )
-    st.session_state["genre_checks"][genre] = checked
-    if checked:
-        selected_genres.append(genre)
-
+st.sidebar.markdown(
+    """
+    <style>
+    [data-testid="stSidebar"] > div:first-child {
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+    }
+    [data-testid="stSidebar"] .stMultiSelect {
+        flex: 1;
+    }
+    [data-testid="stSidebar"] .stMultiSelect > div {
+        height: 100%;
+    }
+    [data-testid="stSidebar"] .stMultiSelect [data-baseweb="select"] {
+        height: 100%;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
 # Filtrar
 mask = (
     df["year"].between(*year_range) &
