@@ -32,11 +32,8 @@ year_max = int(df["year"].max())
 all_genres   = sorted(df["genre"].dropna().unique().tolist())
 all_consoles = sorted(df["console"].dropna().unique().tolist())
 
-# Keys internas para reset (nunca usadas directamente por widgets)
-if "reset_genres" not in st.session_state:
-    st.session_state["reset_genres"] = all_genres
-if "reset_consoles" not in st.session_state:
-    st.session_state["reset_consoles"] = all_consoles
+if "reset_count" not in st.session_state:
+    st.session_state["reset_count"] = 0
 
 col_s1, col_s2 = st.sidebar.columns(2)
 year_start = col_s1.number_input("Año inicial", min_value=year_min, max_value=year_max, value=year_min, step=1)
@@ -48,25 +45,22 @@ if year_start > year_end:
 else:
     year_range = (year_start, year_end)
 
+rc = st.session_state["reset_count"]
+
 selected_genres = st.sidebar.multiselect(
     "Géneros", all_genres,
-    default=st.session_state["reset_genres"],
-    key="genres_select"
+    default=all_genres,
+    key=f"genres_select_{rc}"
 )
 
 selected_consoles = st.sidebar.multiselect(
     "Consolas", all_consoles,
-    default=st.session_state["reset_consoles"],
-    key="consoles_select"
+    default=all_consoles,
+    key=f"consoles_select_{rc}"
 )
 
 if st.sidebar.button("↺ Restablecer Filtros", use_container_width=True):
-    st.session_state["reset_genres"]   = all_genres
-    st.session_state["reset_consoles"] = all_consoles
-    # Borrar las keys de los widgets para forzar re-render con default
-    for k in ["genres_select", "consoles_select"]:
-        if k in st.session_state:
-            del st.session_state[k]
+    st.session_state["reset_count"] += 1
     st.rerun()
 
 st.sidebar.markdown(
