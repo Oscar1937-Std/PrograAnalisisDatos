@@ -32,6 +32,11 @@ col_s1, col_s2 = st.sidebar.columns(2)
 year_start = col_s1.number_input("Año inicial", min_value=year_min, max_value=year_max, value=year_min, step=1)
 year_end   = col_s2.number_input("Año final",   min_value=year_min, max_value=year_max, value=year_max, step=1)
 
+if st.sidebar.button("↺ Restablecer años y géneros", use_container_width=True):
+    year_start = year_min
+    year_end   = year_max
+    st.session_state["genres_select"] = sorted(df["genre"].dropna().unique().tolist())
+
 if year_start > year_end:
     st.sidebar.error("⚠️ El año inicial no puede ser mayor al final.")
     year_range = (year_min, year_max)
@@ -40,7 +45,7 @@ else:
 
 st.sidebar.markdown("---")
 
-all_genres = sorted(df["genre"].dropna().unique())
+all_genres = sorted(df["genre"].dropna().unique().tolist())
 selected_genres = st.sidebar.multiselect(
     "Géneros",
     all_genres,
@@ -48,7 +53,27 @@ selected_genres = st.sidebar.multiselect(
     key="genres_select"
 )
 
-
+st.sidebar.markdown(
+    """
+    <style>
+    [data-testid="stSidebar"] > div:first-child {
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+    }
+    [data-testid="stSidebar"] .stMultiSelect {
+        flex: 1;
+    }
+    [data-testid="stSidebar"] .stMultiSelect > div {
+        height: 100%;
+    }
+    [data-testid="stSidebar"] .stMultiSelect [data-baseweb="select"] {
+        height: 100%;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
 
 # Filtrar
 mask = (
