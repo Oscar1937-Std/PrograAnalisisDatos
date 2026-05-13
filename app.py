@@ -76,10 +76,11 @@ st.markdown("---")
 # ── Sección 1: Ventas por año ─────────────────────────────────────────────────
 st.subheader("📈 Ventas globales totales por año")
 ventas_anio = dff.groupby("year")["total_sales"].sum().reset_index()
-fig1 = px.area(
+fig1 = px.line(
     ventas_anio, x="year", y="total_sales",
     labels={"year": "Año", "total_sales": "Ventas (M unidades)"},
-    color_discrete_sequence=["#6c63ff"]
+    color_discrete_sequence=["#6c63ff"],
+    markers=True
 )
 fig1.update_layout(hovermode="x unified", height=380)
 st.plotly_chart(fig1, use_container_width=True)
