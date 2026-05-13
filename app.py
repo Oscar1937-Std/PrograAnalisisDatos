@@ -3,6 +3,7 @@ import numpy as np
 import streamlit as st
 import plotly.express as px
 import plotly.graph_objects as go
+import plotly.figure_factory as ff
 
 st.set_page_config(
     page_title="🎮 Video Games EDA",
@@ -58,7 +59,14 @@ if st.sidebar.button("↺ Restablecer Filtros", use_container_width=True):
     st.session_state["genres_select"]   = sorted(df["genre"].dropna().unique().tolist())
     st.session_state["consoles_select"] = sorted(df["console"].dropna().unique().tolist())
 
-
+st.sidebar.markdown(
+    """
+    <style>
+    section[data-testid="stSidebar"] > div { overflow-y: hidden !important; }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
 
 # ── Filtrar ───────────────────────────────────────────────────────────────────
 mask = (
@@ -204,7 +212,6 @@ st.plotly_chart(fig8, use_container_width=True)
 
 # ── Sección 7: Heatmap ────────────────────────────────────────────────────────
 st.subheader("🔥 Heatmap: Géneros por Consola")
-import plotly.figure_factory as ff
 
 top_consolas_idx = df[
     df["genre"].isin(selected_genres) &
