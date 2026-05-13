@@ -31,9 +31,6 @@ col_s1, col_s2 = st.sidebar.columns(2)
 year_start = col_s1.number_input("Año inicial", min_value=year_min, max_value=year_max, value=year_min, step=1)
 year_end   = col_s2.number_input("Año final",   min_value=year_min, max_value=year_max, value=year_max, step=1)
 
-if st.sidebar.button("↺ Restablecer años y géneros", use_container_width=True):
-    st.session_state["genres_select"]   = sorted(df["genre"].dropna().unique().tolist())
-    st.session_state["consoles_select"] = sorted(df["console"].dropna().unique().tolist())
 
 if year_start > year_end:
     st.sidebar.error("⚠️ El año inicial no puede ser mayor al final.")
@@ -56,6 +53,11 @@ selected_consoles = st.sidebar.multiselect(
     default=all_consoles,
     key="consoles_select"
 )
+
+if st.sidebar.button("↺ Restablecer Filtros", use_container_width=True):
+    st.session_state["genres_select"]   = sorted(df["genre"].dropna().unique().tolist())
+    st.session_state["consoles_select"] = sorted(df["console"].dropna().unique().tolist())
+
 
 # ── Filtrar ───────────────────────────────────────────────────────────────────
 mask = (
