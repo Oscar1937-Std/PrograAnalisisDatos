@@ -24,7 +24,7 @@ df, df_scored = load_data()
 
 # ── Sidebar ───────────────────────────────────────────────────────────────────
 st.sidebar.title("🎮 Video Games Sales")
-st.sidebar.markdown("**Dataset: 1980 – 2024**")
+st.sidebar.markdown("**Dataset: 1980 – 2020**")
 
 year_min = int(df["year"].min())
 year_max = int(df["year"].max())
