@@ -252,5 +252,6 @@ with summary_cols[2]:
     top_console = dff.groupby("console")["total_sales"].sum().idxmax() if len(dff) else "—"
     st.metric("🕹️ Consola líder", top_console)
 
-st.caption("Dataset: Video Games Sales 1980–2024 | EDA implementado con Streamlit + Plotly")
+
 st.caption("By: Oscar Eduardo de la Fuente Chávez | Luis Miguel Quintana Gil | Santiago Nuñez Perez")
+st.caption("Dataset: Video Games Sales 1980–2024 | EDA implementado con Streamlit + Plotly")
