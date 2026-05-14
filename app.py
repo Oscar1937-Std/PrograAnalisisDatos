@@ -253,4 +253,5 @@ with summary_cols[2]:
     st.metric("🕹️ Consola líder", top_console)
 
 st.caption("Dataset: Video Games Sales 1980–2024 | EDA implementado con Streamlit + Plotly")
-st.caption("Realizado por: Oscar Eduardo de la Fuente Chávez | Luis Miguel Quintana Gil | Santiago Nuñez Perez")
+st.caption("Realizado por: ")
+st.caption("Oscar Eduardo de la Fuente Chávez | Luis Miguel Quintana Gil | Santiago Nuñez Perez")
